@@ -11,30 +11,16 @@ class StudyHelperByAiOrchest():
     tasks: list[Task]
 
     @agent
-    def researcher(self) -> Agent:
+    def context_giver_guy(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
-            verbose=True
-        )
-
-    @agent
-    def reporting_analyst(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            config=self.agents_config['context_giver_guy'], # type: ignore[index]
             verbose=True
         )
 
     @task
-    def research_task(self) -> Task:
+    def context_giver_task(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
-        )
-
-    @task
-    def reporting_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            config=self.tasks_config['context_giver_task'], # type: ignore[index]
         )
 
     @crew

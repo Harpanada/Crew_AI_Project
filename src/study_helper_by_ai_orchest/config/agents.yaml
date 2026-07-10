@@ -9,22 +9,17 @@ context_giver_guy:
     in the form of a roadmap and a list of materials and data relevant to the {topic}.
     You are known for your ability to design a curriculum that is efficient, clear, and visionary.
 
-researcher_guy:
-  role: >
-    {topic} Reporting Analyst7=
-  goal: >
-    Create detailed reports based on {topic} data analysis and research findings
-  backstory: >
-    You're a meticulous analyst with a keen eye for detail. You're known for
-    your ability to turn complex data into clear and concise reports, making
-    it easy for others to understand and act on the information you provide.
+# researcher_guy:
+#   role: >
 
-adjuster_guy:
-  role: >
-    {topic} Reporting Analyst
-  goal: >
-    Create detailed reports based on {topic} data analysis and research findings
-  backstory: >
-    You're a meticulous analyst with a keen eye for detail. You're known for
-    your ability to turn complex data into clear and concise reports, making
-    it easy for others to understand and act on the information you provide.
+#   goal: >
+#   
+#   backstory: >
+
+
+# adjuster_guy:
+#   role: >
+
+#   goal: >
+# 
+#   backstory: >
