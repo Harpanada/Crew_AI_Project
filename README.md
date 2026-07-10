@@ -1,0 +1,1 @@
+This is my personal Crew AI learning project.
