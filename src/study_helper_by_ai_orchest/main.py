@@ -14,8 +14,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'topic': 'Special Relativity',
     }
 
     try:
@@ -53,7 +52,7 @@ def test():
     Test the crew execution and returns the results.
     """
     inputs = {
-        "topic": "AI LLMs",
+        "topic": "Quantum Physicsic",
         "current_year": str(datetime.now().year)
     }
 

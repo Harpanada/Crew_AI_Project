@@ -1,14 +1,16 @@
 context_giver_task:
   description: >
-    Understand what Ovan wants to learn based on {topic}, 
-    and create a curriculum plan or roadmap consisting of 
-    materials and data that support Ovan's learning.
-    Ensure that you create a curriculum relevant to {topic} 
-    and of high quality to guide Ovan's learning materials.
+    Understand what Ovan wants to learn based on {topic},
+    and create a curriculum roadmap to guide Ovan's research assistants, 
+    consisting of materials and data that support Ovan's learning.
+    Ensure you create a high-quality, relevant curriculum on {topic} to 
+    guide Ovan's research assistants in finding related learning materials.
   expected_output: >
-    List number, which is the sequence of materials 
-    that Ovan must study based on {topic}, with detailed bulleted 
-    lists containing data that supports each material in the list number.
+    The curriculum is in the form of a numbered list, 
+    which is the order of the material that Ovan's research assistants must search for by {topic}, 
+    with a detailed bullet point list containing data that supports each item in the list number.
+    Make sure there's no need for additional introductory or explanatory text from you.
+    Simply provide a set of curricula as a guide for Ovan's research assistant.
   agent: context_giver_guy
 
 # research_task:
