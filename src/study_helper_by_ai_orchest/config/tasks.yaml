@@ -1,24 +1,30 @@
 context_giver_task:
   description: >
-    Understand what Ovan wants to learn based on {topic},
-    and create a curriculum roadmap to guide Ovan's research assistants, 
-    consisting of materials and data that support Ovan's learning.
-    Ensure you create a high-quality, relevant curriculum on {topic} to 
-    guide Ovan's research assistants in finding related learning materials.
+    Pahami apa yang ingin dipelajari Ovan mengenai {topic},
+    dan buat roadmap kurikulum untuk memandu asisten Peneliti Ovan,
+    Yang terdiri dari materi dan data yang mendukung pembelajaran Ovan.
+    Pastikan Anda membuat kurikulum berkualitas tinggi dan relevan tentang {topic} untuk
+    membimbing asisten Peneliti Ovan dalam menemukan materi pembelajaran terkait.
   expected_output: >
-    The curriculum is in the form of a numbered list, 
-    which is the order of the material that Ovan's research assistants must search for by {topic}, 
-    with a detailed bullet point list containing data that supports each item in the list number.
-    Make sure there's no need for additional introductory or explanatory text from you.
-    Simply provide a set of curricula as a guide for Ovan's research assistant.
+    Kurikulum dalam bentuk numbered list,yang merupakan urutan materi yang harus dicari oleh asisten peneliti Ovan berdasarkan {topic}, 
+    dengan daftar poin-poin terperinci yang berisi data yang mendukung setiap item dalam nomor daftar.
+    Pastikan tidak ada teks pengantar atau penjelasan tambahan dari Anda.
+    Cukup berikan serangkaian kurikulum sebagai panduan bagi asisten peneliti Ovan.
   agent: context_giver_guy
 
-# research_task:
-#   description: >
-# 
-#   expected_output: >
-
-#   agent: researcher_guy
+research_task:
+  description: >
+    Lakukan riset dan temukan data, materi, dan informasi yang tercantum dalam {topic}. 
+    Pastikan tidak ada bagian dari {topic} yang terlewatkan. 
+    Cari data-data terbaru mengenai {topic} dan sertakan link referensi asli pencarianmu.
+    Pastikan sumber yang Anda gunakan untuk menemukan data, materi, dan informasi tersebut dapat diandalkan.
+    Sajikan data, materi, dan informasi tersebut secara jelas dan komprehensif, berikan penjelasan lengkap tentang {topic}.
+  expected_output: >
+    Materi pembelajaran lengkap dan rapi berdasarkan hasil riset dan penelitian,
+    berisi materi, data, dan informasi yang telah ditemukan.
+  agent: researcher_guy
+  markdown: true # Enable markdown formatting
+  output_file: output/analysis_{topic}.md
 
 # adjust_task:
 #   description: >

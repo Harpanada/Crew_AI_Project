@@ -14,7 +14,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'Special Relativity',
+        'topic': 'Kebijakan Keuangan, Fiskal dan Moneter',
+
     }
 
     try:

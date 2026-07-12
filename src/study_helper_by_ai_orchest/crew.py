@@ -3,7 +3,11 @@ from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
+from crewai_tools import SerperDevTool
 
+
+load_dotenv()
+print(f"DEBUG: Kunci Serper yang terbaca adalah: {os.getenv('SERPER_API_KEY')}")
 
 @CrewBase
 class StudyHelperByAiOrchest():
@@ -12,10 +16,10 @@ class StudyHelperByAiOrchest():
     agents: list[BaseAgent]
     tasks: list[Task]
     
-    load_dotenv()
+    search_tool = SerperDevTool(api_key=os.getenv("SERPER_API_KEY"))
 
     llm_gemini = LLM(
-        model="gemini/gemini-3.5-flash",
+        model="gemini/gemini-3.1-flash-lite",
         api_key= os.getenv("GEMINI_API_KEY"),
         base_url=os.getenv("GEMINI_BASE_URL")
     )
@@ -33,13 +37,29 @@ class StudyHelperByAiOrchest():
             verbose=True,
             llm= self.llm_openrouter
         )
+    
+    @agent
+    def researcher_guy(self) -> Agent:
+        return Agent(
+            config=self.agents_config['researcher_guy'], # type: ignore[index]
+            verbose=True,
+            llm= self.llm_gemini,
+            tools= [self.search_tool]
+        )
 
     @task
     def context_giver_task(self) -> Task:
         return Task(
             config=self.tasks_config['context_giver_task'], # type: ignore[index]
         )
-
+    
+    @task
+    def research_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['research_task'], # type: ignore[index]
+            context= [self.context_giver_task()]
+        )
+    
     @crew
     def crew(self) -> Crew:
         """Creates the StudyHelperByAiOrchest crew"""
