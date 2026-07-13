@@ -26,9 +26,14 @@ research_task:
   markdown: true # Enable markdown formatting
   output_file: output/analysis_{topic}.md
 
-# adjust_task:
-#   description: >
-# 
-#   expected_output: >
-
-#   agent: adjuster_guy
+adjust_task:
+  description: >
+    Susun ulang materi tentang {topic} sesuai dengan preferensi, gaya belajar, 
+    dan kemampuan saya yang telah kamu ketahui, untuk membantu saya belajar tentang topik tersebut.
+    Lakukan penyesuaian dengan hati-hati dan teliti, 
+    jangan sampai ada insight dan gagasan yang terlewat untuk kamu sampaikan kepadaku.
+  expected_output: >
+    Materi yang spesifik sesuai dengan kemampuan, dan preferensi belajar saya.
+  agent: adjuster_guy
+  markdown: true
+  output_file: output/adjusted_{topic}.md

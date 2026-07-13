@@ -30,12 +30,18 @@ class StudyHelperByAiOrchest():
         base_url=os.getenv("OPENROUTER_BASE_URL")
     )
 
+    llm_nvidia= LLM(
+        model="openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+        api_key= os.getenv("OPENROUTER_API_KEY"),
+        base_url=os.getenv("OPENROUTER_BASE_URL")
+    )
+
     @agent
     def context_giver_guy(self) -> Agent:
         return Agent(
             config=self.agents_config['context_giver_guy'], # type: ignore[index]
             verbose=True,
-            llm= self.llm_openrouter
+            llm= self.llm_nvidia
         )
     
     @agent
@@ -43,8 +49,16 @@ class StudyHelperByAiOrchest():
         return Agent(
             config=self.agents_config['researcher_guy'], # type: ignore[index]
             verbose=True,
-            llm= self.llm_gemini,
+            llm= self.llm_openrouter,
             tools= [self.search_tool]
+        )
+    
+    @agent
+    def adjuster_guy(self) -> Agent:
+        return Agent(
+            config= self.agents_config['adjuster_guy'],
+            verbose=True,
+            llm= self.llm_gemini
         )
 
     @task
@@ -59,6 +73,12 @@ class StudyHelperByAiOrchest():
             config=self.tasks_config['research_task'], # type: ignore[index]
             context= [self.context_giver_task()]
         )
+    @task
+    def adjust_task(self) -> Task:
+        return Task(
+            config= self.tasks_config['adjust_task'],
+            context=[self.research_task()]
+        ) 
     
     @crew
     def crew(self) -> Crew:
