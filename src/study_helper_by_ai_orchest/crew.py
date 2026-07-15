@@ -5,9 +5,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from crewai_tools import SerperDevTool
 
-
 load_dotenv()
-print(f"DEBUG: Kunci Serper yang terbaca adalah: {os.getenv('SERPER_API_KEY')}")
 
 @CrewBase
 class StudyHelperByAiOrchest():

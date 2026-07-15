@@ -14,7 +14,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'Psikologi Dasar',
+        'topic': 'UTBK, SNBT',
 
     }
 
