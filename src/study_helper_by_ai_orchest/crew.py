@@ -4,6 +4,11 @@ from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from crewai_tools import SerperDevTool
+from crewai.knowledge.source.text_file_knowledge_source import TextFileKnowledgeSource
+
+text_source = TextFileKnowledgeSource(
+    file_paths=["user_preference.txt"]
+)
 
 load_dotenv()
 
@@ -56,7 +61,15 @@ class StudyHelperByAiOrchest():
         return Agent(
             config= self.agents_config['adjuster_guy'],
             verbose=True,
-            llm= self.llm_gemini
+            llm= self.llm_gemini,
+            knowledge_sources=[text_source],
+            embedder={  
+                "provider": "google-generativeai",
+                "config": {
+                   "model_name": "gemini-embedding-001",
+                   "api_key": os.getenv("GEMINI_API_KEY")
+          }
+         }
         )
 
     @task
