@@ -1,4 +1,4 @@
-context_giver_task:
+manager_task:
   description: >
     Pahami apa yang ingin dipelajari Ovan mengenai {topic},
     dan buat roadmap kurikulum untuk memandu asisten Peneliti Ovan,
@@ -11,29 +11,3 @@ context_giver_task:
     Pastikan tidak ada teks pengantar atau penjelasan tambahan dari Anda.
     Cukup berikan serangkaian kurikulum sebagai panduan bagi asisten peneliti Ovan.
   agent: context_giver_guy
-
-research_task:
-  description: >
-    Lakukan riset dan temukan data, materi, dan informasi yang tercantum dalam {topic}. 
-    Pastikan tidak ada bagian dari {topic} yang terlewatkan. 
-    Cari data-data terbaru mengenai {topic} dan sertakan link referensi asli pencarianmu.
-    Pastikan sumber yang Anda gunakan untuk menemukan data, materi, dan informasi tersebut dapat diandalkan.
-    Sajikan data, materi, dan informasi tersebut secara jelas dan komprehensif, berikan penjelasan lengkap tentang {topic}.
-  expected_output: >
-    Materi pembelajaran lengkap dan rapi berdasarkan hasil riset dan penelitian,
-    berisi materi, data, dan informasi yang telah ditemukan.
-  agent: researcher_guy
-  markdown: true # Enable markdown formatting
-  output_file: output/analysis_{topic}.md
-
-adjust_task:
-  description: >
-    Susun ulang materi tentang {topic} sesuai dengan preferensi, gaya belajar, 
-    dan kemampuan saya yang telah kamu ketahui, untuk membantu saya belajar tentang topik tersebut.
-    Lakukan penyesuaian dengan hati-hati dan teliti, 
-    jangan sampai ada insight dan gagasan yang terlewat untuk kamu sampaikan kepadaku.
-  expected_output: >
-    Materi yang spesifik sesuai dengan kemampuan, dan preferensi belajar saya.
-  agent: adjuster_guy
-  markdown: true
-  output_file: output/adjusted_{topic}.md
