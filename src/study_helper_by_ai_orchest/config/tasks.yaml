@@ -1,4 +1,4 @@
-manager_task:
+main_task:
   description: >
     Pahami apa yang ingin dipelajari Ovan mengenai {topic},
     dan buat roadmap kurikulum untuk memandu asisten Peneliti Ovan,
@@ -10,4 +10,3 @@ manager_task:
     dengan daftar poin-poin terperinci yang berisi data yang mendukung setiap item dalam nomor daftar.
     Pastikan tidak ada teks pengantar atau penjelasan tambahan dari Anda.
     Cukup berikan serangkaian kurikulum sebagai panduan bagi asisten peneliti Ovan.
-  agent: context_giver_guy

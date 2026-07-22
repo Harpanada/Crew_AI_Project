@@ -19,7 +19,7 @@ def run():
     }
 
     try: 
-        StudyHelperByAiOrchest().crew().kickoff(inputs=inputs)
+        StudyHelperByAiOrchest().crew().kickoff()
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
