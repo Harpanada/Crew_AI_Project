@@ -40,26 +40,26 @@ class StudyHelperByAiOrchest():
     )
 
     @agent
-    def context_giver_guy(self) -> Agent:
+    def data_analyst(self) -> Agent:
         return Agent(
-            config=self.agents_config['context_giver_guy'], # type: ignore[index]
+            config=self.agents_config['data_analyst'], # type: ignore[index]
             verbose=True,
             llm= self.llm_nvidia
         )
     
     @agent
-    def researcher_guy(self) -> Agent:
+    def reasearcher(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher_guy'], # type: ignore[index]
+            config=self.agents_config['reasearcher'], # type: ignore[index]
             verbose=True,
             llm= self.llm_openrouter,
             tools= [self.search_tool]
         )
     
     @agent
-    def adjuster_guy(self) -> Agent:
+    def project_manager(self) -> Agent:
         return Agent(
-            config= self.agents_config['adjuster_guy'],
+            config= self.agents_config['project_manager'],
             verbose=True,
             llm= self.llm_gemini,
             knowledge_sources=[text_source],
@@ -73,30 +73,32 @@ class StudyHelperByAiOrchest():
         )
 
     @task
-    def context_giver_task(self) -> Task:
+    def main_task(self) -> Task:
         return Task(
-            config=self.tasks_config['context_giver_task'], # type: ignore[index]
+            config=self.tasks_config['main_task'], # type: ignore[index]
         )
     
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
-            context= [self.context_giver_task()]
-        )
-    @task
-    def adjust_task(self) -> Task:
-        return Task(
-            config= self.tasks_config['adjust_task'],
-            context=[self.research_task()]
-        ) 
+    # @task
+    # def research_task(self) -> Task:
+    #     return Task(
+    #         config=self.tasks_config['research_task'], # type: ignore[index]
+    #         context= [self.context_giver_task()]
+    #     )
+    # @task
+    # def adjust_task(self) -> Task:
+    #     return Task(
+    #         config= self.tasks_config['adjust_task'],
+    #         context=[self.research_task()]
+    #     ) 
     
     @crew
     def crew(self) -> Crew:
         """Creates the StudyHelperByAiOrchest crew"""
         return Crew(
-            agents=self.agents,
-            tasks=self.tasks,
-            process=Process.sequential,
+            agents=[self.reasearcher(),self.data_analyst()],
+            tasks= self.tasks,
+            manager_agent= [self.project_manager()],
+            process=Process.hierarchical,
+            planning=True,
             verbose=True,
         )

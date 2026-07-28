@@ -14,12 +14,11 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'UTBK, SNBT',
-
+        'topic': 'The impact of the closure of the Strait of Hormuz on the economy'
     }
 
     try: 
-        StudyHelperByAiOrchest().crew().kickoff()
+        StudyHelperByAiOrchest().crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
@@ -29,7 +28,7 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-        "topic": "AI LLMs",
+        "task": "AI LLMs",
         'current_year': str(datetime.now().year)
     }
     try:
