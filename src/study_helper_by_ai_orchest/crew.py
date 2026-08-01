@@ -15,7 +15,7 @@ class StudyHelperByAiOrchest():
     agents: list[BaseAgent]
     tasks: list[Task]
 
-    embedder_config={
+    tools_embedder={
         "embedding_model": {
             "provider":  "google-generativeai",
             "config": {
@@ -26,19 +26,27 @@ class StudyHelperByAiOrchest():
         },
     }}
 
+    crew_embedder = {
+    "provider": "google-generativeai",
+    "config": {
+        "api_key": os.getenv("GEMINI_API_KEY"),
+        "model_name": "gemini-embedding-001",
+    }
+}
+
     sop_pdf_tool = PDFSearchTool(
         pdf="./database/Kebijakan_SOP_Customer_Service_NexusAIS.pdf",
-        config=embedder_config)
+        config=tools_embedder)
 
     transaksi_csv_tool = CSVSearchTool(
         csv="./database/NexusAIS_Data_Transaksi.csv",
-        config=embedder_config)
+        config=tools_embedder)
 
     pelanggan_csv_tool = CSVSearchTool(
         csv="./database/NexusAIS_Database_Pelanggan.csv",
-        config=embedder_config)
+        config=tools_embedder)
 
-    company_profile_knowledge= PDFKnowledgeSource(file_paths=['NexusAIS_Company_Profile_KnowledgeBase.pdf'],embedder=embedder_config)
+    company_profile_knowledge= PDFKnowledgeSource(file_paths=['NexusAIS_Company_Profile_KnowledgeBase.pdf'],embedder=tools_embedder)
 
     llm_gemini = LLM(
         model="gemini/gemini-3.1-flash-lite",
@@ -65,7 +73,7 @@ class StudyHelperByAiOrchest():
             verbose=True,
             llm= self.llm_nvidia,
             tools=[self.transaksi_csv_tool,self.pelanggan_csv_tool],
-            embedder=self.embedder_config
+            embedder=self.crew_embedder
         )
     
     @agent
@@ -98,18 +106,18 @@ class StudyHelperByAiOrchest():
         """Creates the StudyHelperByAiOrchest crew"""
         return Crew(
             agents=[
-                self.reasearcher(),
-                self.data_analyst()
+                self.internal_data_inspector(),
+                self.policy_expert()
                 ],
             tasks= [
                 self.main_task()
                 ],
-            manager_agent= self.project_manager(),
+            manager_agent= self.custommer_service_manager(),
             process=Process.hierarchical,
             planning=True,
             planning_llm=self.llm_gemini,
             verbose=True,
-            knowledge_sources= self.company_profile_knowledge,
-            embedder=self.embedder_config
+            knowledge_sources= [self.company_profile_knowledge],
+            embedder=self.crew_embedder
             
         )
