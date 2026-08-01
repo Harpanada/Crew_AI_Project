@@ -15,29 +15,28 @@ class StudyHelperByAiOrchest():
     agents: list[BaseAgent]
     tasks: list[Task]
 
-    
-    embedder_config={  
-            "provider": "google-generativeai",
+    embedder_config={
+        "embedding_model": {
+            "provider":  "google-generativeai",
             "config": {
-            "model_name": "models/text-embedding-004",
-            "api_key": os.getenv("GEMINI_API_KEY")
-         }
-     }
+                "model_name": "gemini-embedding-001",
+                "api_key": os.getenv("GEMINI_API_KEY")
+
+
+        },
+    }}
 
     sop_pdf_tool = PDFSearchTool(
         pdf="./database/Kebijakan_SOP_Customer_Service_NexusAIS.pdf",
-        config=dict(embedder=embedder_config)
-    )
+        config=embedder_config)
 
     transaksi_csv_tool = CSVSearchTool(
         csv="./database/NexusAIS_Data_Transaksi.csv",
-        config=dict(embedder=embedder_config)
-    )
+        config=embedder_config)
 
     pelanggan_csv_tool = CSVSearchTool(
         csv="./database/NexusAIS_Database_Pelanggan.csv",
-        config=dict(embedder=embedder_config)
-    )
+        config=embedder_config)
 
     company_profile_knowledge= PDFKnowledgeSource(file_paths=['NexusAIS_Company_Profile_KnowledgeBase.pdf'],embedder=embedder_config)
 
@@ -60,27 +59,28 @@ class StudyHelperByAiOrchest():
     )
 
     @agent
-    def data_analyst(self) -> Agent:
+    def internal_data_inspector(self) -> Agent:
         return Agent(
-            config=self.agents_config['data_analyst'], # type: ignore[index]
+            config=self.agents_config['internal_data_inspector'], # type: ignore[index]
             verbose=True,
             llm= self.llm_nvidia,
-            tools=[self.sop_pdf_tool, self.transaksi_csv_tool,self.pelanggan_csv_tool],
+            tools=[self.transaksi_csv_tool,self.pelanggan_csv_tool],
             embedder=self.embedder_config
         )
     
     @agent
-    def reasearcher(self) -> Agent:
+    def policy_expert(self) -> Agent:
         return Agent(
-            config=self.agents_config['reasearcher'], # type: ignore[index]
+            config=self.agents_config['policy_expert'], # type: ignore[index]
             verbose=True,
             llm= self.llm_openrouter,
+            tools=[self.sop_pdf_tool]
         )
     
     @agent
-    def project_manager(self) -> Agent:
+    def custommer_service_manager(self) -> Agent:
         return Agent(
-            config= self.agents_config['project_manager'],
+            config= self.agents_config['custommer_service_manager'],
             verbose=True,
             llm= self.llm_gemini,
             allow_delegation=True,
