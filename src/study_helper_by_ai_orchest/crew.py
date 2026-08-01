@@ -10,10 +10,12 @@ load_dotenv()
 
 @CrewBase
 class StudyHelperByAiOrchest():
-    """StudyHelperByAiOrchest crew"""
+    """StudyHelperByAiOrchest Crew"""
 
-    agents: list[BaseAgent]
+    agents: list[BaseAgent] 
     tasks: list[Task]
+
+    """StudyHelperByAiOrchest Embedder"""
 
     tools_embedder={
         "embedding_model": {
@@ -31,9 +33,10 @@ class StudyHelperByAiOrchest():
     "config": {
         "api_key": os.getenv("GEMINI_API_KEY"),
         "model_name": "gemini-embedding-001",
-    }
-}
+    }}
 
+    """StudyHelperByAiOrchest Knowledge"""
+    
     sop_pdf_tool = PDFSearchTool(
         pdf="./database/Kebijakan_SOP_Customer_Service_NexusAIS.pdf",
         config=tools_embedder)
@@ -47,6 +50,8 @@ class StudyHelperByAiOrchest():
         config=tools_embedder)
 
     company_profile_knowledge= PDFKnowledgeSource(file_paths=['NexusAIS_Company_Profile_KnowledgeBase.pdf'],embedder=tools_embedder)
+
+    """StudyHelperByAiOrchest Llm Models"""
 
     llm_gemini = LLM(
         model="gemini/gemini-3.1-flash-lite",
@@ -66,34 +71,37 @@ class StudyHelperByAiOrchest():
         base_url=os.getenv("OPENROUTER_BASE_URL")
     )
 
+    """StudyHelperByAiOrchest Agents"""
     @agent
     def internal_data_inspector(self) -> Agent:
         return Agent(
             config=self.agents_config['internal_data_inspector'], # type: ignore[index]
-            verbose=True,
             llm= self.llm_nvidia,
             tools=[self.transaksi_csv_tool,self.pelanggan_csv_tool],
-            embedder=self.crew_embedder
+            embedder=self.crew_embedder,
+            verbose=True,
         )
     
     @agent
     def policy_expert(self) -> Agent:
         return Agent(
             config=self.agents_config['policy_expert'], # type: ignore[index]
-            verbose=True,
             llm= self.llm_openrouter,
-            tools=[self.sop_pdf_tool]
+            tools=[self.sop_pdf_tool],
+            verbose=True,
         )
     
     @agent
     def custommer_service_manager(self) -> Agent:
         return Agent(
             config= self.agents_config['custommer_service_manager'],
-            verbose=True,
             llm= self.llm_gemini,
             allow_delegation=True,
+            verbose=True,
             
         )
+
+    """StudyHelperByAiOrchest Task"""
 
     @task
     def main_task(self) -> Task:
@@ -109,15 +117,12 @@ class StudyHelperByAiOrchest():
                 self.internal_data_inspector(),
                 self.policy_expert()
                 ],
-            tasks= [
-                self.main_task()
-                ],
+            tasks= [self.main_task()],
             manager_agent= self.custommer_service_manager(),
-            process=Process.hierarchical,
-            planning=True,
-            planning_llm=self.llm_gemini,
-            verbose=True,
             knowledge_sources= [self.company_profile_knowledge],
-            embedder=self.crew_embedder
-            
+            planning_llm=self.llm_gemini,
+            process=Process.hierarchical,
+            embedder=self.crew_embedder,
+            planning=True,
+            verbose=True,
         )

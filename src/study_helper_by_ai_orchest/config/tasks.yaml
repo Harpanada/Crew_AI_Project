@@ -6,5 +6,5 @@ main_task:
   expected_output: >
     Markdown fille berisi keputusan untuk menangani masalah pelanggan.
   markdown: true # Enable markdown formatting
-  output_file: keputusan_laporan{report}.md
+  output_file: output/keputusan_laporan{report}.md
   
