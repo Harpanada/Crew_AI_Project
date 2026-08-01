@@ -1,7 +1,10 @@
 main_task:
   description: >
-    Understand {topic}
+    Atasi laporan atau keluhan dari pelanggan mengenai {report}. 
+    Pahami apa yang menjadi permasalahan pelanggan,cek kredibilitas id pelanggan {id} di data internal perusahaan. 
+    Lalu cek kebijakan perusahaan untuk mengatasi masalah tersebut dan putuskan apa yang perlu dilakukan.
   expected_output: >
-    Decide what should our company do
+    Markdown fille berisi keputusan untuk menangani masalah pelanggan.
   markdown: true # Enable markdown formatting
-  output_file: output/analysis_{topic}.md
+  output_file: keputusan_laporan{report}.md
+  

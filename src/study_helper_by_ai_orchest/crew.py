@@ -3,12 +3,8 @@ from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from crewai_tools import SerperDevTool
-from crewai.knowledge.source.text_file_knowledge_source import TextFileKnowledgeSource
-
-text_source = TextFileKnowledgeSource(
-    file_paths=["user_preference.txt"]
-)
+from crewai_tools import PDFSearchTool, CSVSearchTool
+from crewai.knowledge.source.pdf_knowledge_source import PDFKnowledgeSource
 
 load_dotenv()
 
@@ -18,17 +14,41 @@ class StudyHelperByAiOrchest():
 
     agents: list[BaseAgent]
     tasks: list[Task]
+
     
-    search_tool = SerperDevTool(api_key=os.getenv("SERPER_API_KEY"))
+    embedder_config={  
+            "provider": "google-generativeai",
+            "config": {
+            "model_name": "models/text-embedding-004",
+            "api_key": os.getenv("GEMINI_API_KEY")
+         }
+     }
+
+    sop_pdf_tool = PDFSearchTool(
+        pdf="./database/Kebijakan_SOP_Customer_Service_NexusAIS.pdf",
+        config=dict(embedder=embedder_config)
+    )
+
+    transaksi_csv_tool = CSVSearchTool(
+        csv="./database/NexusAIS_Data_Transaksi.csv",
+        config=dict(embedder=embedder_config)
+    )
+
+    pelanggan_csv_tool = CSVSearchTool(
+        csv="./database/NexusAIS_Database_Pelanggan.csv",
+        config=dict(embedder=embedder_config)
+    )
+
+    company_profile_knowledge= PDFKnowledgeSource(file_paths=['NexusAIS_Company_Profile_KnowledgeBase.pdf'],embedder=embedder_config)
 
     llm_gemini = LLM(
         model="gemini/gemini-3.1-flash-lite",
-        api_key= os.getenv("GEMINI_API_KEY"),
+        api_key= os.getenv("GEMINI_API_KEY"),   
         base_url=os.getenv("GEMINI_BASE_URL")
     )
 
     llm_openrouter= LLM(
-        model="openrouter/tencent/hy3:free",
+        model="openrouter/inclusionai/ling-3.0-flash:free",
         api_key= os.getenv("OPENROUTER_API_KEY"),
         base_url=os.getenv("OPENROUTER_BASE_URL")
     )
@@ -44,7 +64,9 @@ class StudyHelperByAiOrchest():
         return Agent(
             config=self.agents_config['data_analyst'], # type: ignore[index]
             verbose=True,
-            llm= self.llm_nvidia
+            llm= self.llm_nvidia,
+            tools=[self.sop_pdf_tool, self.transaksi_csv_tool,self.pelanggan_csv_tool],
+            embedder=self.embedder_config
         )
     
     @agent
@@ -53,7 +75,6 @@ class StudyHelperByAiOrchest():
             config=self.agents_config['reasearcher'], # type: ignore[index]
             verbose=True,
             llm= self.llm_openrouter,
-            tools= [self.search_tool]
         )
     
     @agent
@@ -62,14 +83,8 @@ class StudyHelperByAiOrchest():
             config= self.agents_config['project_manager'],
             verbose=True,
             llm= self.llm_gemini,
-            knowledge_sources=[text_source],
-            embedder={  
-                "provider": "google-generativeai",
-                "config": {
-                   "model_name": "gemini-embedding-001",
-                   "api_key": os.getenv("GEMINI_API_KEY")
-          }
-         }
+            allow_delegation=True,
+            
         )
 
     @task
@@ -78,27 +93,23 @@ class StudyHelperByAiOrchest():
             config=self.tasks_config['main_task'], # type: ignore[index]
         )
     
-    # @task
-    # def research_task(self) -> Task:
-    #     return Task(
-    #         config=self.tasks_config['research_task'], # type: ignore[index]
-    #         context= [self.context_giver_task()]
-    #     )
-    # @task
-    # def adjust_task(self) -> Task:
-    #     return Task(
-    #         config= self.tasks_config['adjust_task'],
-    #         context=[self.research_task()]
-    #     ) 
-    
     @crew
     def crew(self) -> Crew:
         """Creates the StudyHelperByAiOrchest crew"""
         return Crew(
-            agents=[self.reasearcher(),self.data_analyst()],
-            tasks= self.tasks,
-            manager_agent= [self.project_manager()],
+            agents=[
+                self.reasearcher(),
+                self.data_analyst()
+                ],
+            tasks= [
+                self.main_task()
+                ],
+            manager_agent= self.project_manager(),
             process=Process.hierarchical,
             planning=True,
+            planning_llm=self.llm_gemini,
             verbose=True,
+            knowledge_sources= self.company_profile_knowledge,
+            embedder=self.embedder_config
+            
         )

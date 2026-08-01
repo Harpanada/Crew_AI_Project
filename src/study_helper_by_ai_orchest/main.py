@@ -14,7 +14,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'The impact of the closure of the Strait of Hormuz on the economy'
+        'report': 'Dashboard Sistem Saya tidak bekerja.',
+        'id': 'CUST-101'
     }
 
     try: 

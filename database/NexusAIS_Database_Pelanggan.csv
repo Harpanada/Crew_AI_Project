@@ -1,0 +1,16 @@
+ID Pelanggan,Nama Perusahaan,Industri,PIC Contact,Email PIC,No. Telepon,Tanggal Onboarding,Status Akun,Total API Call/Bln
+CUST-101,PT Bank Mandiri Fintech,Perbankan / Financial,Budi Santoso,budi.s@mandirifin.co.id,+62 811-2345-678,2024-01-15,ACTIVE,4500000
+CUST-102,PT Telkom Digital Solusi,Telekomunikasi,Siti Rahma,siti.rahma@telkomds.co.id,+62 812-9876-543,2024-02-01,ACTIVE,8900000
+CUST-103,Bukalapak Labs,E-Commerce,Kevin Wijaya,kevin.w@bukalapaklabs.com,+62 813-1122-334,2024-02-20,ACTIVE,6200000
+CUST-104,CV Digital Kreatif,Agensi Digital,Rian Hidayat,rian@digitalkreatif.id,+62 856-4455-667,2024-03-10,ACTIVE,850000
+CUST-105,PT Solusi Cloud Indonesia,IT Services,Dewi Lestari,dewi@cloudindo.co.id,+62 817-8899-001,2024-03-15,ACTIVE,920000
+CUST-106,PT Fintek Karya Nusantara,Fintech,Andi Pratama,andi.p@finteknusantara.com,+62 812-3344-556,2024-04-01,ACTIVE,1100000
+CUST-107,Startup Inovasi Bangsa,Edtech,Fajar Nugraha,fajar@inovasibangsa.io,+62 878-9900-112,2024-04-12,ACTIVE,85000
+CUST-108,DataAI Analytics,Analytics,Nadia Putri,nadia@dataai.id,+62 815-6677-889,2024-05-02,SUSPENDED,12000
+CUST-109,PT Teknologi Maju Bersama,Manufacturing,Hendra Gunawan,hendra@majubersama.co.id,+62 811-5566-778,2024-05-18,ACTIVE,780000
+CUST-110,Nusantara Healthtech,Kesehatan,Dr. Anita Sari,anita@nusantarahealth.id,+62 813-4433-221,2024-06-01,ACTIVE,3100000
+CUST-111,PT Retail Modern Indonesia,Retail,Bambang Utama,bambang@retailmodern.co.id,+62 818-0011-223,2024-06-15,ACTIVE,5400000
+CUST-112,Aplikasi Anak Bangsa,Logistik,Deni Saputra,deni@anakbangsa.app,+62 857-1122-334,2024-07-01,ACTIVE,95000
+CUST-113,PT Edukasi Digital,Edtech,Rina Permata,rina@edukasidigital.co.id,+62 812-6655-443,2024-07-10,ACTIVE,640000
+CUST-114,CV Siber Media,Media,Gita Gutama,gita@sibermedia.id,+62 819-8877-665,2024-07-20,CHURNED,0
+CUST-115,PT Logistik Pintar,Logistik,Eko Prasetyo,eko@logistikpintar.co.id,+62 811-9988-776,2024-07-25,ACTIVE,820000
