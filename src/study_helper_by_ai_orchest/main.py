@@ -14,8 +14,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        'report': 'Dashboard Sistem Saya tidak bekerja.',
-        'id': 'CUST-101'
+        'report': 'API Error',
+        'id': 'CUST-105'
     }
 
     try: 

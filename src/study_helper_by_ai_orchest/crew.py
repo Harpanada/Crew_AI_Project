@@ -125,4 +125,5 @@ class StudyHelperByAiOrchest():
             embedder=self.crew_embedder,
             planning=True,
             verbose=True,
+            tracing=True
         )
